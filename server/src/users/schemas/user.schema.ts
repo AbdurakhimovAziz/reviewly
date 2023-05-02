@@ -6,13 +6,13 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User extends Document {
-  @Prop({ required: true, unique: true })
-  userName: string;
+  @Prop({ required: true })
+  username: string;
 
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, minlength: 8 }) // TODO: add password validation
   password: string;
 
   @Prop({ default: Role.User, enum: Role })
