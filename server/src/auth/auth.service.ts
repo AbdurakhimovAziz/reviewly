@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -9,6 +10,7 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { User } from 'src/users/schemas/user.schema';
 import { UsersService } from 'src/users/users.service';
 import { LoginDto } from './dto/login.dto';
+import { Role } from 'src/helpers/constants';
 
 @Injectable()
 export class AuthService {
@@ -37,6 +39,18 @@ export class AuthService {
     }
     const token = this.generateToken(user);
     return { token };
+  }
+
+  public async grantAdminAccess(email: string) {
+    const user = await this.usersService.findByEmail(email);
+    if (!user) {
+      throw new NotFoundException('User does not exist');
+    }
+    if (user.role === 'admin') {
+      throw new BadRequestException('User is already an admin');
+    }
+    await this.usersService.update(user._id, { role: Role.Admin });
+    return { message: 'User granted admin access', success: true };
   }
 
   private async validateUser(email: string, password: string) {

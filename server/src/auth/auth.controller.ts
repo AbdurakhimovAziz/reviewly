@@ -8,29 +8,39 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { RequestWithUser } from 'src/types';
+import { Role } from 'src/helpers/constants';
+import { Public, Roles } from 'src/helpers/decorators';
+import { RequestWithUser } from 'src/helpers/types';
 import { AuthService } from './auth.service';
-import { LoginDto, RegisterDto } from './dto';
-import { JwtAuthGuard } from './guards';
+import { GrantAdminDto, LoginDto, RegisterDto } from './dto';
+import { JwtAuthGuard, RolesGuard } from './guards';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('register')
+  @Public()
   async register(@Body() body: RegisterDto) {
     return this.authService.register(body);
   }
 
   @HttpCode(HttpStatus.OK)
+  @Public()
   @Post('login')
   async login(@Body() body: LoginDto) {
     return this.authService.login(body);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req: RequestWithUser) {
     return req.user;
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Roles(Role.Admin)
+  @Post('grant-admin')
+  async grantAdminAccess(@Body() body: GrantAdminDto) {
+    return this.authService.grantAdminAccess(body.email);
   }
 }
