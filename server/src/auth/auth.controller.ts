@@ -6,14 +6,12 @@ import {
   HttpStatus,
   Post,
   Request,
-  UseGuards,
 } from '@nestjs/common';
 import { Role } from 'src/helpers/constants';
 import { Public, Roles } from 'src/helpers/decorators';
 import { RequestWithUser } from 'src/helpers/types';
 import { AuthService } from './auth.service';
 import { GrantAdminDto, LoginDto, RegisterDto } from './dto';
-import { JwtAuthGuard, RolesGuard } from './guards';
 
 @Controller('auth')
 export class AuthController {
