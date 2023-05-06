@@ -2,27 +2,31 @@ import { AccountCircle } from '@mui/icons-material';
 import {
   AppBar,
   Box,
-  Container,
-  FormControlLabel,
-  FormGroup,
   IconButton,
   Menu,
   MenuItem,
-  Switch,
   Toolbar,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useState, ChangeEvent, MouseEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, MouseEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from '../../redux';
+import { Theme } from '../../theme';
+import { ColorMode } from '../ColorMode';
 
 export const Header = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setAuth(event.target.checked);
-  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector(getUser);
+  const isMobileScreen = useMediaQuery('(max-width:1000px)');
 
   const handleMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -34,32 +38,17 @@ export const Header = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label="login switch"
-            />
-          }
-          label={auth ? 'Logout' : 'Login'}
-        />
-      </FormGroup>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            component="h1"
+            sx={{ flexGrow: 1 }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Photos
+            Reviewly
           </Typography>
+          <ColorMode />
           {auth && (
             <div>
               <IconButton

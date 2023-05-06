@@ -102,3 +102,5 @@ export const themeSettings = (mode: theme) => {
     },
   };
 };
+
+export type Theme = ReturnType<typeof themeSettings>;

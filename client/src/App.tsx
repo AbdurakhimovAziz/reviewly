@@ -1,15 +1,14 @@
-import { Header } from './components/Header';
-import { Route, Routes } from 'react-router-dom';
-import { router } from './router';
-import { useSelector } from 'react-redux';
-import { getMode } from './redux';
-import { useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { themeSettings } from './theme';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { Route, Routes } from 'react-router-dom';
+import { Header } from './components/Header';
+import { getColorMode } from './redux';
+import { router } from './router';
 
 function App() {
-  const mode = useSelector(getMode);
-  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  const mode = useSelector(getColorMode);
+  const theme = useMemo(() => createTheme({ palette: { mode: mode } }), [mode]);
 
   return (
     <ThemeProvider theme={theme}>

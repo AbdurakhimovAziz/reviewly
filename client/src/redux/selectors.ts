@@ -1,6 +1,6 @@
 import { RootState } from './types';
 
-export const getMode = (state: RootState) => state.app.mode;
+export const getColorMode = (state: RootState) => state.app.colorMode;
 export const getUser = (state: RootState) => state.app.user;
 export const getToken = (state: RootState) => state.app.token;
 export const getPosts = (state: RootState) => state.posts.posts;
