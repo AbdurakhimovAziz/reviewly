@@ -1,13 +1,11 @@
-import {
-  combineReducers,
-  configureStore,
-  PreloadedState,
-} from '@reduxjs/toolkit';
-import { reducer as appReducer } from '.';
-import { RootState } from './types';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+
+import { reducer as appReducer } from './slices/app';
+import { reducer as postsReducer } from './slices/posts';
 
 export const rootReducer = combineReducers({
   app: appReducer,
+  posts: postsReducer,
 });
 
 // export const setupStore = (preloadedState?: PreloadedState<RootState>) =>

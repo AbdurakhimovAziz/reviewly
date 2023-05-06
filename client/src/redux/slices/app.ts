@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { theme } from '../../utils/constants';
 
 const initialState = {
-  mode: 'light',
+  mode: theme.LIGHT,
   user: null,
   token: null,
-  posts: [],
 };
 
 export const appSlice = createSlice({
@@ -12,7 +12,7 @@ export const appSlice = createSlice({
   initialState,
   reducers: {
     setMode: (state) => {
-      state.mode = state.mode === 'light' ? 'dark' : 'light';
+      state.mode = state.mode === theme.LIGHT ? theme.DARK : theme.LIGHT;
     },
     setLogin: (state, action) => {
       state.user = action.payload.user;
@@ -22,12 +22,9 @@ export const appSlice = createSlice({
       state.user = null;
       state.token = null;
     },
-    setPosts: (state, action) => {
-      state.posts = action.payload;
-    },
   },
 });
 
-export const { setMode, setLogin, setLogout, setPosts } = appSlice.actions;
+export const { setMode, setLogin, setLogout } = appSlice.actions;
 
 export const { reducer } = appSlice;

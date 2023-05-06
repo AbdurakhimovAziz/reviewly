@@ -1,3 +1,10 @@
+import { LoginForm } from '../../forms/Login';
+import { FormWrapper } from '../../components/FormWrapper';
+
 export const LoginPage = () => {
-  return <div>LoginPage</div>;
+  return (
+    <FormWrapper>
+      <LoginForm />
+    </FormWrapper>
+  );
 };
