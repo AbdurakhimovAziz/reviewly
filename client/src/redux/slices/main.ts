@@ -16,20 +16,20 @@ export const mainSlice = createSlice({
       state.colorMode =
         state.colorMode === theme.LIGHT ? theme.DARK : theme.LIGHT;
     },
-    login: (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-    },
-    logout: (state) => {
-      state.user = null;
-      state.token = null;
-    },
     setUser: (state, action) => {
       state.user = action.payload;
+    },
+    setToken: (state, action) => {
+      state.token = action.payload;
+    },
+    setLogout: (state) => {
+      state.user = null;
+      state.token = null;
     },
   },
 });
 
-export const { changeColorMode, login, logout, setUser } = mainSlice.actions;
+export const { changeColorMode, setToken, setLogout, setUser } =
+  mainSlice.actions;
 
 export const { reducer } = mainSlice;

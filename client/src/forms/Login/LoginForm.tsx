@@ -1,24 +1,48 @@
-import { useForm } from 'react-hook-form';
-import { LoginFormValues } from './types';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
-import { Link as RouterLink } from 'react-router-dom';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { HttpStatusCode, isAxiosError } from 'axios';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { login } from '../../api';
+import { useAppDispatch } from '../../redux';
+import { routePaths } from '../../router';
+import { LoginFormValues } from './types';
+import { getUserById } from '../../api/user';
+import { setToken, setUser } from '../../redux/slices/main';
 
 export const LoginForm = () => {
+  const [formError, setFormError] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormValues>();
 
-  const onSubmit = (data: LoginFormValues) => {
-    console.log(data); // You can handle the form submission here
+  const onSubmit = async (data: LoginFormValues) => {
+    try {
+      const { userId, token, success } = await login(data);
+      dispatch(setToken(token));
+      if (success) {
+        const user = await getUserById(userId);
+        dispatch(setUser(user));
+        navigate(routePaths.HOME);
+      }
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (error.response?.status === HttpStatusCode.Unauthorized) {
+          setFormError('Invalid email or password');
+        } else {
+          setFormError('Something went wrong. Please try again later');
+        }
+      }
+    }
   };
 
   return (
@@ -40,6 +64,8 @@ export const LoginForm = () => {
           label="Email Address"
           autoComplete="email"
           autoFocus
+          error={Boolean(errors.email)}
+          helperText={errors.email && 'Email is required'}
           {...register('email', { required: true })}
         />
         <TextField
@@ -50,11 +76,9 @@ export const LoginForm = () => {
           type="password"
           id="password"
           autoComplete="current-password"
+          error={Boolean(errors.password)}
+          helperText={errors.password && 'Password is required'}
           {...register('password', { required: true })}
-        />
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
         />
         <Button
           type="submit"
@@ -64,11 +88,20 @@ export const LoginForm = () => {
         >
           Sign In
         </Button>
+        {formError && (
+          <Typography color="error" marginBottom={1} align="center">
+            {formError}
+          </Typography>
+        )}
         <Grid container>
           <Grid item>
             <Typography>
               Don't have an account?{' '}
-              <Link component={RouterLink} to="/register" underline="always">
+              <Link
+                component={RouterLink}
+                to={routePaths.REGISTER}
+                underline="always"
+              >
                 Sign Up
               </Link>
             </Typography>

@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Header } from './components/Header';
 import { getColorMode } from './redux';
 import { router } from './router';
+import { CssBaseline } from '@mui/material';
 
 function App() {
   const mode = useSelector(getColorMode);
@@ -12,6 +13,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline enableColorScheme />
       <Header></Header>
       <Routes>
         {router.map((route) => (

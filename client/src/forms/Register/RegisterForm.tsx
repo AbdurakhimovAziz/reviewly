@@ -1,56 +1,119 @@
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { useForm } from 'react-hook-form';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { routePaths } from '../../router';
 import { RegisterFormValues } from './types';
+import { signup } from '../../api';
+import { useAppDispatch } from '../../redux';
+import { HttpStatusCode, isAxiosError } from 'axios';
+import { useState } from 'react';
 
 export const RegisterForm = () => {
+  const [formError, setFormError] = useState<string | null>(null);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormValues>();
 
-  const onSubmit = (data: RegisterFormValues) => {
-    console.log(data); // You can handle the form submission here
+  const onSubmit = async (data: RegisterFormValues) => {
+    try {
+      const res = await signup(data);
+      if (res.success) {
+        navigate(routePaths.LOGIN);
+      }
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (error.response?.status === HttpStatusCode.Conflict) {
+          setFormError('Email already exists');
+        } else {
+          setFormError('Something went wrong. Please try again later');
+        }
+      }
+    }
   };
 
   return (
-    <></>
-    // <Form onSubmit={handleSubmit(onSubmit)} style={{ width: '500px' }}>
-    //   <Stack direction="vertical" gap={4}>
-    //     <Form.Group controlId="formUsername">
-    //       <Form.Label>Username</Form.Label>
-    //       <Form.Control
-    //         type="text"
-    //         {...register('username', { required: true })}
-    //       />
-    //       {errors.username && <span>This field is required</span>}
-    //     </Form.Group>
-
-    //     <Form.Group controlId="formEmail">
-    //       <Form.Label>Email address</Form.Label>
-    //       <Form.Control
-    //         type="email"
-    //         {...register('email', { required: true })}
-    //       />
-    //       {errors.email && <span>Please enter a valid email address</span>}
-    //     </Form.Group>
-
-    //     <Form.Group controlId="formPassword">
-    //       <Form.Label>Password</Form.Label>
-    //       <Form.Control
-    //         type="password"
-    //         {...register('password', { required: true })}
-    //       />
-    //       {errors.password && (
-    //         <span>Password must be at least 6 characters long</span>
-    //       )}
-    //     </Form.Group>
-
-    //     <div className="d-grid gap-2">
-    //       <Button variant="primary" type="submit">
-    //         Register
-    //       </Button>
-    //     </div>
-    //   </Stack>
-    // </Form>
+    <>
+      <Typography component="h1" variant="h5">
+        Sign Up
+      </Typography>
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+        sx={{ mt: 1 }}
+      >
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="email"
+          type="email"
+          label="Email Address"
+          autoComplete="email"
+          autoFocus
+          error={Boolean(errors.email)}
+          helperText={errors.email && 'Email is required'}
+          {...register('email', { required: true })}
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="username"
+          label="Username"
+          autoComplete="username"
+          error={Boolean(errors.username)}
+          helperText={errors.username && 'Username is required'}
+          {...register('username', { required: true })}
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          label="Password"
+          type="password"
+          id="password"
+          autoComplete="current-password"
+          error={Boolean(errors.password)}
+          helperText={errors.password && 'Password is required'}
+          {...register('password', { required: true })}
+        />
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Sign Up
+        </Button>
+        {formError && (
+          <Typography color="error" marginBottom={1} align="center">
+            {formError}
+          </Typography>
+        )}
+        <Grid container>
+          <Grid item>
+            <Typography>
+              Already have an account?{' '}
+              <Link
+                component={RouterLink}
+                to={routePaths.LOGIN}
+                underline="always"
+              >
+                Sign In
+              </Link>
+            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
+    </>
   );
 };

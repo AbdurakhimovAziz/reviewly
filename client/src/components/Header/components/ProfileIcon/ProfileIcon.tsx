@@ -4,7 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { MouseEvent, useState } from 'react';
 import { useAppDispatch } from '../../../../redux';
-import { logout } from '../../../../redux/slices/main';
+import { setLogout } from '../../../../redux/slices/main';
 
 export const ProfileIcon = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -20,7 +20,7 @@ export const ProfileIcon = () => {
 
   const handleLogout = () => {
     handleClose();
-    dispatch(logout());
+    dispatch(setLogout());
   };
 
   return (

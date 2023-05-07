@@ -1,4 +1,3 @@
-export type LoginFormValues = {
-  email: string;
-  password: string;
-};
+import { LoginRequest } from '../../api';
+
+export type LoginFormValues = LoginRequest;
