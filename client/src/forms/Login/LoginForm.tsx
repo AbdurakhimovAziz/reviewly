@@ -7,7 +7,8 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
-import { Link } from 'react-router-dom';
+import Link from '@mui/material/Link';
+import { Link as RouterLink } from 'react-router-dom';
 
 export const LoginForm = () => {
   const {
@@ -65,7 +66,12 @@ export const LoginForm = () => {
         </Button>
         <Grid container>
           <Grid item>
-            <Link to="/register">{"Don't have an account? Sign Up"}</Link>
+            <Typography>
+              Don't have an account?{' '}
+              <Link component={RouterLink} to="/register" underline="always">
+                Sign Up
+              </Link>
+            </Typography>
           </Grid>
         </Grid>
       </Box>

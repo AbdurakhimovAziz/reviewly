@@ -1,40 +1,16 @@
-import { AccountCircle } from '@mui/icons-material';
-import {
-  AppBar,
-  Box,
-  IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import { useState, MouseEvent } from 'react';
+import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from '../../redux';
-import { Theme } from '../../theme';
-import { ColorMode } from '../ColorMode';
+import { getUser, useAppSelector } from '../../redux';
+import { ColorMode } from './components/ColorMode';
+import { ProfileIcon } from './components/ProfileIcon';
+import { AuthButtons } from './components/AuthButtons';
 
 export const Header = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [auth, setAuth] = useState(true);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const user = useAppSelector(getUser);
+  const isAuth = Boolean(user);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const user = useSelector(getUser);
-  const isMobileScreen = useMediaQuery('(max-width:1000px)');
-
-  const handleMenu = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const navigate = useNavigate();
+  // const isMobileScreen = useMediaQuery('(max-width:1000px)');
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -43,44 +19,15 @@ export const Header = () => {
           <Typography
             variant="h4"
             fontWeight="bold"
-            component="h1"
-            sx={{ flexGrow: 1 }}
+            color="white"
+            component={Link}
+            to="/"
+            sx={{ flexGrow: 1, textDecoration: 'none' }}
           >
             Reviewly
           </Typography>
           <ColorMode />
-          {auth && (
-            <div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-              </Menu>
-            </div>
-          )}
+          {isAuth ? <ProfileIcon /> : <AuthButtons />}
         </Toolbar>
       </AppBar>
     </Box>

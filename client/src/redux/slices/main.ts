@@ -1,31 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { theme } from '../../utils/constants';
+import { MainState } from '../types';
 
-const initialState = {
+const initialState: MainState = {
   colorMode: theme.LIGHT,
   user: null,
   token: null,
 };
 
-export const appSlice = createSlice({
-  name: 'auth',
+export const mainSlice = createSlice({
+  name: 'main',
   initialState,
   reducers: {
     changeColorMode: (state) => {
       state.colorMode =
         state.colorMode === theme.LIGHT ? theme.DARK : theme.LIGHT;
     },
-    setLogin: (state, action) => {
+    login: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
     },
-    setLogout: (state) => {
+    logout: (state) => {
       state.user = null;
       state.token = null;
+    },
+    setUser: (state, action) => {
+      state.user = action.payload;
     },
   },
 });
 
-export const { changeColorMode, setLogin, setLogout } = appSlice.actions;
+export const { changeColorMode, login, logout, setUser } = mainSlice.actions;
 
-export const { reducer } = appSlice;
+export const { reducer } = mainSlice;
