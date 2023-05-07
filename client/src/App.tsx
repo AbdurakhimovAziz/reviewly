@@ -1,7 +1,25 @@
-import { Button, Col, Container, Form, Row, Stack } from 'react-bootstrap';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { Route, Routes } from 'react-router-dom';
+import { Header } from './components/Header';
+import { getColorMode } from './redux';
+import { router } from './router';
 
 function App() {
-  return <Button variant="primary">Primary</Button>;
+  const mode = useSelector(getColorMode);
+  const theme = useMemo(() => createTheme({ palette: { mode: mode } }), [mode]);
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Header></Header>
+      <Routes>
+        {router.map((route) => (
+          <Route path={route.path} key={route.path} element={route.component} />
+        ))}
+      </Routes>
+    </ThemeProvider>
+  );
 }
 
 export default App;
