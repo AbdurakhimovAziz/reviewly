@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, HydratedDocument } from 'mongoose';
-import { Role } from 'src/helpers/constants';
+import { Role } from 'src/helpers/enums';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -12,7 +12,7 @@ export class User extends Document {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ required: true, minlength: 8 }) // TODO: add password validation
+  @Prop({ required: true })
   password: string;
 
   @Prop({ default: Role.User, enum: Role })

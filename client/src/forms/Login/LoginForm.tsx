@@ -1,19 +1,23 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { login } from 'api';
+import { getUserById } from 'api/user';
 import { HttpStatusCode, isAxiosError } from 'axios';
+import { FormError } from 'components/FormError';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { login } from '../../api';
-import { useAppDispatch } from '../../redux';
-import { routePaths } from '../../router';
+import { routePaths } from 'router';
+import { useAppDispatch } from 'store';
+import { setToken, setUser } from 'store/slices/main';
+import { ErrorMessages } from 'utils';
 import { LoginFormValues } from './types';
-import { getUserById } from '../../api/user';
-import { setToken, setUser } from '../../redux/slices/main';
+import { loginFormFields, schema } from './utils';
 
 export const LoginForm = () => {
   const [formError, setFormError] = useState<string | null>(null);
@@ -23,7 +27,9 @@ export const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormValues>();
+  } = useForm<LoginFormValues>({
+    resolver: yupResolver(schema),
+  });
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
@@ -37,13 +43,15 @@ export const LoginForm = () => {
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.response?.status === HttpStatusCode.Unauthorized) {
-          setFormError('Invalid email or password');
+          setFormError(ErrorMessages.INVALID_CREDENTIALS);
         } else {
-          setFormError('Something went wrong. Please try again later');
+          setFormError(ErrorMessages.SERVER_ERROR);
         }
       }
     }
   };
+
+  const handleFormChange = () => setFormError(null);
 
   return (
     <>
@@ -52,34 +60,32 @@ export const LoginForm = () => {
       </Typography>
       <Box
         component="form"
+        onChange={handleFormChange}
         onSubmit={handleSubmit(onSubmit)}
         noValidate
         sx={{ mt: 1 }}
       >
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          autoComplete="email"
-          autoFocus
-          error={Boolean(errors.email)}
-          helperText={errors.email && 'Email is required'}
-          {...register('email', { required: true })}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          error={Boolean(errors.password)}
-          helperText={errors.password && 'Password is required'}
-          {...register('password', { required: true })}
-        />
+        {Object.keys(loginFormFields).map((key) => {
+          const field = key as keyof LoginFormValues;
+          const { autocomplete, id, label, type, autofocus, errorMsg } =
+            loginFormFields[field];
+          return (
+            <TextField
+              key={id}
+              margin="normal"
+              required
+              fullWidth
+              id={id}
+              label={label}
+              autoComplete={autocomplete}
+              autoFocus={autofocus}
+              type={type}
+              error={Boolean(errors[field])}
+              helperText={errors[field] && errors[field]?.message}
+              {...register(field)}
+            />
+          );
+        })}
         <Button
           type="submit"
           fullWidth
@@ -88,11 +94,7 @@ export const LoginForm = () => {
         >
           Sign In
         </Button>
-        {formError && (
-          <Typography color="error" marginBottom={1} align="center">
-            {formError}
-          </Typography>
-        )}
+        <FormError error={formError} />
         <Grid container>
           <Grid item>
             <Typography>

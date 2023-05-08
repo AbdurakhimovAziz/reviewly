@@ -1,12 +1,8 @@
 import { DarkMode, LightMode } from '@mui/icons-material';
 import IconButton from '@mui/material/IconButton';
-import {
-  getColorMode,
-  useAppDispatch,
-  useAppSelector,
-} from '../../../../redux';
-import { changeColorMode } from '../../../../redux/slices/main';
-import { theme } from '../../../../utils/constants';
+import { useAppSelector, getColorMode, useAppDispatch } from 'store';
+import { changeColorMode } from 'store/slices/main';
+import { theme } from 'utils';
 
 export const ColorMode = () => {
   const themeMode = useAppSelector(getColorMode);

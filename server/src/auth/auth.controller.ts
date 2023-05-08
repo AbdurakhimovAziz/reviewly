@@ -7,37 +7,38 @@ import {
   Post,
   Request,
 } from '@nestjs/common';
-import { Role } from 'src/helpers/constants';
+import { Endpoints } from 'src/helpers/constants';
 import { Public, Roles } from 'src/helpers/decorators';
+import { Role } from 'src/helpers/enums';
 import { RequestWithUser } from 'src/helpers/types';
 import { AuthService } from './auth.service';
 import { GrantAdminDto, LoginDto, RegisterDto } from './dto';
 
-@Controller('auth')
+@Controller(Endpoints.AUTH.BASE)
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('register')
+  @Post(Endpoints.AUTH.REGISTER)
   @Public()
   async register(@Body() body: RegisterDto) {
     return this.authService.register(body);
   }
 
   @HttpCode(HttpStatus.OK)
+  @Post(Endpoints.AUTH.LOGIN)
   @Public()
-  @Post('login')
   async login(@Body() body: LoginDto) {
     return this.authService.login(body);
   }
 
-  @Get('profile')
+  @Get(Endpoints.AUTH.PROFILE)
   getProfile(@Request() req: RequestWithUser) {
     return req.user;
   }
 
   @HttpCode(HttpStatus.OK)
   @Roles(Role.Admin)
-  @Post('grant-admin')
+  @Post(Endpoints.AUTH.GRANT_ADMIN)
   async grantAdminAccess(@Body() body: GrantAdminDto) {
     return this.authService.grantAdminAccess(body.email);
   }
