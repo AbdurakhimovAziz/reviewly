@@ -1,6 +1,7 @@
 import axiosInstance from '../axios';
 import { endpoints } from '../endpoints';
-import { RegisterRequest, ServerResponse } from '../types';
+import { ServerResponse } from '../types';
+import { RegisterRequest } from './types';
 
 export const signup = async (
   body: RegisterRequest

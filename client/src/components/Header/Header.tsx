@@ -1,7 +1,7 @@
 import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { getUser, useAppSelector } from '../../redux';
-import { routePaths } from '../../router';
+import { routePaths } from 'router';
+import { useAppSelector, getUser } from 'store';
 import { AuthButtons } from './components/AuthButtons';
 import { ColorMode } from './components/ColorMode';
 import { ProfileIcon } from './components/ProfileIcon';

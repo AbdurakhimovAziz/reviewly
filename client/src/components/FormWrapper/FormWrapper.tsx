@@ -8,6 +8,8 @@ export const FormWrapper = ({ children }: PropsWithChildren) => {
         borderRadius={3}
         padding={4}
         boxShadow={4}
+        border={1}
+        borderColor={'white'}
         sx={{
           marginTop: 8,
           display: 'flex',

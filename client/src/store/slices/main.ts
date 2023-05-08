@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { theme } from '../../utils/constants';
-import { MainState } from '../types';
+import { MainState } from 'store';
+import { theme } from 'utils';
 
 const initialState: MainState = {
   colorMode: theme.LIGHT,

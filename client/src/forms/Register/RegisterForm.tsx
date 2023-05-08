@@ -1,17 +1,20 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { signup } from 'api';
+import { HttpStatusCode, isAxiosError } from 'axios';
+import { FormError } from 'components/FormError';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { routePaths } from '../../router';
+import { routePaths } from 'router';
+import { ErrorMessages } from 'utils';
 import { RegisterFormValues } from './types';
-import { signup } from '../../api';
-import { useAppDispatch } from '../../redux';
-import { HttpStatusCode, isAxiosError } from 'axios';
-import { useState } from 'react';
+import { registerFormFields, schema } from './utils';
 
 export const RegisterForm = () => {
   const [formError, setFormError] = useState<string | null>(null);
@@ -20,7 +23,9 @@ export const RegisterForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFormValues>();
+  } = useForm<RegisterFormValues>({
+    resolver: yupResolver(schema),
+  });
 
   const onSubmit = async (data: RegisterFormValues) => {
     try {
@@ -31,13 +36,15 @@ export const RegisterForm = () => {
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.response?.status === HttpStatusCode.Conflict) {
-          setFormError('Email already exists');
+          setFormError(ErrorMessages.DUPLICATE_EMAIL);
         } else {
-          setFormError('Something went wrong. Please try again later');
+          setFormError(ErrorMessages.SERVER_ERROR);
         }
       }
     }
   };
+
+  const handleFormChange = () => setFormError(null);
 
   return (
     <>
@@ -47,45 +54,31 @@ export const RegisterForm = () => {
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
+        onChange={handleFormChange}
         noValidate
         sx={{ mt: 1 }}
       >
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          type="email"
-          label="Email Address"
-          autoComplete="email"
-          autoFocus
-          error={Boolean(errors.email)}
-          helperText={errors.email && 'Email is required'}
-          {...register('email', { required: true })}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="username"
-          label="Username"
-          autoComplete="username"
-          error={Boolean(errors.username)}
-          helperText={errors.username && 'Username is required'}
-          {...register('username', { required: true })}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          error={Boolean(errors.password)}
-          helperText={errors.password && 'Password is required'}
-          {...register('password', { required: true })}
-        />
+        {Object.keys(registerFormFields).map((key) => {
+          const field = key as keyof RegisterFormValues;
+          const { autocomplete, id, label, type, autofocus, errorMsg } =
+            registerFormFields[field];
+          return (
+            <TextField
+              key={id}
+              margin="normal"
+              required
+              fullWidth
+              id={id}
+              label={label}
+              autoComplete={autocomplete}
+              autoFocus={autofocus}
+              type={type}
+              error={Boolean(errors[field])}
+              helperText={errors[field] && errors[field]?.message}
+              {...register(field)}
+            />
+          );
+        })}
         <Button
           type="submit"
           fullWidth
@@ -94,11 +87,7 @@ export const RegisterForm = () => {
         >
           Sign Up
         </Button>
-        {formError && (
-          <Typography color="error" marginBottom={1} align="center">
-            {formError}
-          </Typography>
-        )}
+        <FormError error={formError} />
         <Grid container>
           <Grid item>
             <Typography>

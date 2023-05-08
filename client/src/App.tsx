@@ -3,9 +3,9 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import { Header } from './components/Header';
-import { getColorMode } from './redux';
 import { router } from './router';
 import { CssBaseline } from '@mui/material';
+import { getColorMode } from './store';
 
 function App() {
   const mode = useSelector(getColorMode);

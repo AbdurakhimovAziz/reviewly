@@ -1,14 +1,13 @@
-import { formFieldType } from 'forms/types';
 import * as yup from 'yup';
-import { RegisterFormValues } from './types';
+import { formFieldType } from '../types';
+import { LoginFormValues } from './types';
 
-export const schema = yup.object<RegisterFormValues>().shape({
+export const schema = yup.object<LoginFormValues>().shape({
   email: yup.string().email().required(),
-  username: yup.string().required().min(3).max(20),
   password: yup.string().required().min(8).max(20),
 });
 
-export const registerFormFields: formFieldType<RegisterFormValues> = {
+export const loginFormFields: formFieldType<LoginFormValues> = {
   email: {
     id: 'email',
     label: 'Email Address',
@@ -16,13 +15,6 @@ export const registerFormFields: formFieldType<RegisterFormValues> = {
     autocomplete: 'email',
     autofocus: true,
     errorMsg: 'Email is required',
-  },
-  username: {
-    id: 'username',
-    label: 'Username',
-    type: 'text',
-    autocomplete: 'username',
-    errorMsg: 'Username is required',
   },
   password: {
     id: 'password',

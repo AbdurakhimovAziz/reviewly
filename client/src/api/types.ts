@@ -1,4 +1,4 @@
-import { User } from '../interfaces/User';
+import { AxiosError } from 'axios';
 
 export type ServerResponse = {
   message: string;
@@ -11,18 +11,8 @@ export type ServerErrorResponse = {
   error: string;
 };
 
-export type RegisterRequest = {
-  username: string;
-  email: string;
-  password: string;
-};
-
-export type LoginRequest = {
-  email: string;
-  password: string;
-};
-
-export type LoginResponse = ServerResponse & {
-  token: string;
-  userId: string;
+export type AxiosErrorWithRetry = AxiosError & {
+  config: {
+    _retry?: boolean;
+  };
 };
