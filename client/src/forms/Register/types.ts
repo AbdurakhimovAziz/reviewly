@@ -1,5 +1,3 @@
-export type RegisterFormValues = {
-  username: string;
-  email: string;
-  password: string;
-};
+import { RegisterRequest } from '../../api';
+
+export type RegisterFormValues = RegisterRequest;

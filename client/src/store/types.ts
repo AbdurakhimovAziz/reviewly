@@ -1,6 +1,6 @@
-import { User } from '../interfaces/User';
-import { theme } from '../utils/constants';
-import { rootReducer, store } from './store';
+import { User } from 'interfaces/User';
+import { theme } from 'utils';
+import { store, rootReducer } from './store';
 
 export type AppStore = typeof store;
 export type RootState = ReturnType<typeof rootReducer>;

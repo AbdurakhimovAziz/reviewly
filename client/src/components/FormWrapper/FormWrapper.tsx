@@ -1,11 +1,15 @@
-import { Container, CssBaseline, Box } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { PropsWithChildren } from 'react';
 
 export const FormWrapper = ({ children }: PropsWithChildren) => {
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <Box
+        borderRadius={3}
+        padding={4}
+        boxShadow={4}
+        border={1}
+        borderColor={'white'}
         sx={{
           marginTop: 8,
           display: 'flex',

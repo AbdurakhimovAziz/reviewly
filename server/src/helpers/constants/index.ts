@@ -1,1 +1,2 @@
-export { Role } from './role.enum';
+export { Endpoints } from './endpoints';
+export { CLIENT_URL } from './clientUrl';

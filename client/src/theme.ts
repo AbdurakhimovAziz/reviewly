@@ -1,4 +1,4 @@
-import { theme } from './utils/constants';
+import { theme } from './utils';
 
 export const colorTokens = {
   grey: {
