@@ -7,6 +7,8 @@ export const Endpoints = {
     PROFILE: '/profile',
     GOOGLE: '/google',
     GOOGLE_REDIRECT: '/google/redirect',
+    GITHUB: '/github',
+    GITHUB_REDIRECT: '/github/redirect',
   },
 
   USERS: {

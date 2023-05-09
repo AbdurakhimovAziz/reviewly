@@ -7,12 +7,12 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { CLIENT_URL } from 'src/helpers/constants';
 import { ErrorMessages, Role, SuccessMessages } from 'src/helpers/enums';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { CreateUserDto } from 'src/users/dto';
 import { User } from 'src/users/schemas/user.schema';
 import { UsersService } from 'src/users/users.service';
-import { LoginDto } from './dto/login.dto';
-import { CLIENT_URL } from 'src/helpers/constants';
+import { LoginDto } from './dto';
 
 @Injectable()
 export class AuthService {
@@ -61,7 +61,14 @@ export class AuthService {
     return { message: SuccessMessages.USER_GRANTED_ADMIN, success: true };
   }
 
-  public async googleAuthRedirect(user: User) {
+  public googleAuthRedirect(user: User) {
+    const token = this.generateToken(user);
+    return {
+      url: `${CLIENT_URL}?token=${token}&userId=${user._id}`,
+    };
+  }
+
+  public githubAuthRedirect(user: User) {
     const token = this.generateToken(user);
     return {
       url: `${CLIENT_URL}?token=${token}&userId=${user._id}`,
@@ -70,7 +77,7 @@ export class AuthService {
 
   private async validateUser(email: string, password: string) {
     const user = await this.usersService.findByEmail(email);
-    if (user.googleId) return null;
+    if (user.googleId || user.githubId) return null;
     if (user && (await bcrypt.compare(password, user.password))) {
       return user;
     }

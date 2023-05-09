@@ -1,15 +1,25 @@
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';
-import { Box, Button, IconButton, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
+import { endpoints } from 'api';
 import axiosInstance from 'api/axios';
 import { SocialAuthProps } from './types';
 
 export const SocialAuth = ({ isSignUp }: SocialAuthProps) => {
   const buttonTxt = isSignUp ? 'Sign Up' : 'Sign in';
 
-  const handleGoogleAuth = () => {
-    window.open(`${axiosInstance.defaults.baseURL}/auth/google`, '_self');
-  };
+  const handleGoogleAuth = () =>
+    window.open(
+      `${axiosInstance.defaults.baseURL}${endpoints.google}`,
+      '_self'
+    );
+
+  const handleGithubAuth = () =>
+    window.open(
+      `${axiosInstance.defaults.baseURL}${endpoints.github}`,
+      '_self'
+    );
+
   return (
     <Box
       sx={{
@@ -31,7 +41,7 @@ export const SocialAuth = ({ isSignUp }: SocialAuthProps) => {
         {buttonTxt} with Google
       </Button>
       <Button
-        onClick={handleGoogleAuth}
+        onClick={handleGithubAuth}
         variant="outlined"
         fullWidth
         startIcon={<GitHubIcon />}

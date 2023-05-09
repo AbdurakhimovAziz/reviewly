@@ -4,4 +4,6 @@ export enum endpoints {
   register = '/auth/register',
   users = '/users',
   profile = '/auth/profile',
+  google = '/auth/google',
+  github = '/auth/github',
 }

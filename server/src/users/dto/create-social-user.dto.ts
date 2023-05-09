@@ -1,7 +1,8 @@
 import { CreateUserDto } from './create-user.dto';
 
-export class createGoogleUserDto {
+export class createSocialUserDto {
   email: string;
   username: string;
-  googleId: string;
+  googleId?: string;
+  githubId?: string;
 }

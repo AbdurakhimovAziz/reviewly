@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy } from 'passport-google-oauth20';
 import { Endpoints } from 'src/helpers/constants';
+import { EnvVariableMap } from 'src/helpers/enums';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -12,8 +13,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     private usersService: UsersService,
   ) {
     super({
-      clientID: configService.get('GOOGLE_CLIENT_ID'),
-      clientSecret: configService.get('GOOGLE_CLIENT_SECRET'),
+      clientID: configService.get(EnvVariableMap.GOOGLE_CLIENT_ID),
+      clientSecret: configService.get(EnvVariableMap.GOOGLE_CLIENT_SECRET),
       callbackURL: `${Endpoints.AUTH.BASE}${Endpoints.AUTH.GOOGLE_REDIRECT}`,
       scope: ['email', 'profile'],
     });
@@ -30,6 +31,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       username: displayName,
       googleId: id,
     };
-    return this.usersService.findOrCreate(newUser);
+    return this.usersService.findAndUpdateOrCreate(newUser);
   }
 }
