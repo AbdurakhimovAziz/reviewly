@@ -7,4 +7,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
   @IsIn([Role.Admin, Role.User])
   role?: Role;
+
+  @IsOptional()
+  updatedAt?: Date;
 }

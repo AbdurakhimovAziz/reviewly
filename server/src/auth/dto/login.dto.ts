@@ -5,5 +5,5 @@ export class LoginDto {
   email: string;
 
   @MinLength(8)
-  password: string;
+  password?: string;
 }

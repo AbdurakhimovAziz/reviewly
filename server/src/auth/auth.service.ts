@@ -12,6 +12,7 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { User } from 'src/users/schemas/user.schema';
 import { UsersService } from 'src/users/users.service';
 import { LoginDto } from './dto/login.dto';
+import { CLIENT_URL } from 'src/helpers/constants';
 
 @Injectable()
 export class AuthService {
@@ -60,8 +61,16 @@ export class AuthService {
     return { message: SuccessMessages.USER_GRANTED_ADMIN, success: true };
   }
 
+  public async googleAuthRedirect(user: User) {
+    const token = this.generateToken(user);
+    return {
+      url: `${CLIENT_URL}?token=${token}&userId=${user._id}`,
+    };
+  }
+
   private async validateUser(email: string, password: string) {
     const user = await this.usersService.findByEmail(email);
+    if (user.googleId) return null;
     if (user && (await bcrypt.compare(password, user.password))) {
       return user;
     }

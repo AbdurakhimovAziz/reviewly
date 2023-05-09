@@ -5,6 +5,8 @@ export const Endpoints = {
     REGISTER: '/register',
     GRANT_ADMIN: '/grant-admin',
     PROFILE: '/profile',
+    GOOGLE: '/google',
+    GOOGLE_REDIRECT: '/google/redirect',
   },
 
   USERS: {

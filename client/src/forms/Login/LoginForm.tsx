@@ -18,6 +18,7 @@ import { setToken, setUser } from 'store/slices/main';
 import { ErrorMessages } from 'utils';
 import { LoginFormValues } from './types';
 import { loginFormFields, schema } from './utils';
+import { SocialAuth } from 'forms/SocialAuth';
 
 export const LoginForm = () => {
   const [formError, setFormError] = useState<string | null>(null);
@@ -86,16 +87,12 @@ export const LoginForm = () => {
             />
           );
         })}
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
+        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
           Sign In
         </Button>
         <FormError error={formError} />
-        <Grid container>
+        <SocialAuth />
+        <Grid container mt={2}>
           <Grid item>
             <Typography>
               Don't have an account?{' '}

@@ -3,4 +3,5 @@ export enum endpoints {
   login = '/auth/login',
   register = '/auth/register',
   users = '/users',
+  profile = '/auth/profile',
 }

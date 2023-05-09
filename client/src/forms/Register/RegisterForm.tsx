@@ -8,13 +8,14 @@ import Typography from '@mui/material/Typography';
 import { signup } from 'api';
 import { HttpStatusCode, isAxiosError } from 'axios';
 import { FormError } from 'components/FormError';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { routePaths } from 'router';
 import { ErrorMessages } from 'utils';
 import { RegisterFormValues } from './types';
 import { registerFormFields, schema } from './utils';
+import { SocialAuth } from 'forms/SocialAuth';
 
 export const RegisterForm = () => {
   const [formError, setFormError] = useState<string | null>(null);
@@ -27,22 +28,25 @@ export const RegisterForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: RegisterFormValues) => {
-    try {
-      const res = await signup(data);
-      if (res.success) {
-        navigate(routePaths.LOGIN);
-      }
-    } catch (error) {
-      if (isAxiosError(error)) {
-        if (error.response?.status === HttpStatusCode.Conflict) {
-          setFormError(ErrorMessages.DUPLICATE_EMAIL);
-        } else {
-          setFormError(ErrorMessages.SERVER_ERROR);
+  const onSubmit = useCallback(
+    async (data: RegisterFormValues) => {
+      try {
+        const res = await signup(data);
+        if (res.success) {
+          navigate(routePaths.LOGIN);
+        }
+      } catch (error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === HttpStatusCode.Conflict) {
+            setFormError(ErrorMessages.DUPLICATE_EMAIL);
+          } else {
+            setFormError(ErrorMessages.SERVER_ERROR);
+          }
         }
       }
-    }
-  };
+    },
+    [navigate]
+  );
 
   const handleFormChange = () => setFormError(null);
 
@@ -79,16 +83,12 @@ export const RegisterForm = () => {
             />
           );
         })}
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
+        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
           Sign Up
         </Button>
         <FormError error={formError} />
-        <Grid container>
+        <SocialAuth isSignUp />
+        <Grid container mt={2}>
           <Grid item>
             <Typography>
               Already have an account?{' '}
