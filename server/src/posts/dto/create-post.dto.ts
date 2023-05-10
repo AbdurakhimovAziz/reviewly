@@ -27,7 +27,7 @@ export class CreatePostDto {
 
   @IsNotEmpty()
   @IsString()
-  content: string;
+  body: string;
 
   @IsOptional()
   @IsString()

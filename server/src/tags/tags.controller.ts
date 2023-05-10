@@ -14,8 +14,8 @@ export class TagsController {
 
   @Get()
   @Public()
-  findAll(@Query('amount') amount: number) {
-    return this.tagsService.findMostUsed(amount);
+  findAll(@Query('limit') limit: number) {
+    return this.tagsService.findMostUsed(limit);
   }
 
   @Get(':id')

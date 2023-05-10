@@ -1,3 +1,10 @@
+import { Box, Typography } from '@mui/material';
+import { Posts } from 'components/Posts';
+
 export const HomePage = () => {
-  return <div>Home Page</div>;
+  return (
+    <Box>
+      <Posts />
+    </Box>
+  );
 };

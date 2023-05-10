@@ -6,9 +6,11 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreatePostDto, UpdatePostDto } from './dto';
 import { PostsService } from './posts.service';
+import { Public } from 'src/helpers/decorators';
 
 @Controller('posts')
 export class PostsController {
@@ -20,11 +22,15 @@ export class PostsController {
   }
 
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  @Public()
+  findAll(@Query() query: any) {
+    const { limit, page, sortBy } = query;
+
+    return this.postsService.findAll(limit, page, sortBy);
   }
 
   @Get(':id')
+  @Public()
   findOne(@Param('id') id: string) {
     return this.postsService.findOne(id);
   }

@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, HydratedDocument, Types } from 'mongoose';
 import { PostGroup } from 'src/helpers/enums';
-import { Tag } from 'src/tags/schemas/tag.schema';
 
 export type PostDocument = HydratedDocument<Post>;
 
@@ -23,7 +22,7 @@ export class Post extends Document {
   tags: Types.ObjectId[];
 
   @Prop({ required: true })
-  content: string;
+  body: string;
 
   @Prop()
   imageUrl: string;

@@ -19,8 +19,8 @@ export class TagsService {
     return this.tagModel.find().exec();
   }
 
-  public async findMostUsed(amount: number = 10) {
-    return this.tagModel.find().sort({ frequency: -1 }).limit(amount).exec();
+  public async findMostUsed(limit: number = 10) {
+    return this.tagModel.find().sort({ frequency: -1 }).limit(limit).exec();
   }
 
   public async findByName(name: string) {
