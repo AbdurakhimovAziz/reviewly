@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard, RolesGuard } from './auth/guards';
 import { UsersModule } from './users/users.module';
+import { PostsModule } from './posts/posts.module';
+import { TagsModule } from './tags/tags.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { UsersModule } from './users/users.module';
     MongooseModule.forRoot(process.env.MONGODB_URI, {
       dbName: process.env.MONGODB_DNAME,
     }),
+    PostsModule,
+    TagsModule,
   ],
   controllers: [AppController],
   providers: [
