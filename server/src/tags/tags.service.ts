@@ -1,6 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateTagDto } from './dto';
 import { Tag } from './schemas/tag.schema';
 import { ErrorMessages } from 'src/helpers/enums';
@@ -27,7 +27,7 @@ export class TagsService {
     return this.tagModel.findOne({ name }).exec();
   }
 
-  public async findManyByNames(names: string[]) {
+  public async findMany(names: string[]) {
     return this.tagModel.find({ name: { $in: names } }).exec();
   }
 
@@ -35,12 +35,23 @@ export class TagsService {
     return this.tagModel.findById(id).exec();
   }
 
-  public async updateManyOrCreate(tagNames: string[]) {
+  public async updateOrCreateTags(tagNames: string[]) {
     const bulkWriteOps = tagNames.map((tagName) => ({
       updateOne: {
         filter: { name: tagName },
         update: { $inc: { frequency: 1 } },
         upsert: true,
+      },
+    }));
+
+    return await this.tagModel.bulkWrite(bulkWriteOps);
+  }
+
+  public async decreaseFrequency(tagIds: Types.ObjectId[]) {
+    const bulkWriteOps = tagIds.map((tagId) => ({
+      updateOne: {
+        filter: { _id: tagId },
+        update: { $inc: { frequency: -1 } },
       },
     }));
 

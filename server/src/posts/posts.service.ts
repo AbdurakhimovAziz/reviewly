@@ -1,26 +1,55 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { PostSortParams } from 'src/helpers/enums';
+import { TagsService } from 'src/tags/tags.service';
+import { CreatePostDto, UpdatePostDto } from './dto';
+import { Post } from './schemas/post.schema';
+import { mockPosts } from 'src/helpers/constants/mockPosts';
 
 @Injectable()
 export class PostsService {
-  create(createPostDto: CreatePostDto) {
-    return 'This action adds a new post';
+  constructor(
+    @InjectModel(Post.name) private readonly postModel: Model<Post>,
+    private tagsService: TagsService,
+  ) {
+    // this.postModel.insertMany(mockPosts);
   }
 
-  findAll() {
-    return `This action returns all posts`;
+  public async create(createPostDto: CreatePostDto) {
+    const { tagNames, ...post } = createPostDto;
+    await this.tagsService.updateOrCreateTags(tagNames);
+    const tags = await this.tagsService.findMany(tagNames);
+    const tagIds = tags.map((tag) => tag._id);
+    return this.postModel.create({ post, tags: tagIds });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} post`;
+  public findAll(
+    limit: number = 10,
+    page: number = 1,
+    sortBy: PostSortParams = PostSortParams.DATE,
+  ) {
+    const skip = (page - 1) * limit;
+    return this.postModel
+      .find()
+      .sort({ [sortBy]: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate('tags')
+      .exec();
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  public findOne(id: string) {
+    return this.postModel.findById(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  public update(id: string, updatePostDto: UpdatePostDto) {
+    return this.postModel.findByIdAndUpdate(id, updatePostDto, { new: true });
+  }
+
+  public async remove(id: string) {
+    const post = await this.postModel.findById(id);
+    await this.tagsService.decreaseFrequency(post.tags);
+    return this.postModel.deleteOne({ _id: id });
   }
 }
