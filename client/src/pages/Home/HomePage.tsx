@@ -1,9 +1,9 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import { Posts } from 'components/Posts';
 
 export const HomePage = () => {
   return (
-    <Box>
+    <Box paddingX={4} paddingY={5}>
       <Posts />
     </Box>
   );

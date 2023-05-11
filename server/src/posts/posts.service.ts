@@ -36,6 +36,7 @@ export class PostsService {
       .skip(skip)
       .limit(limit)
       .populate('tags')
+      .populate('author')
       .exec();
   }
 

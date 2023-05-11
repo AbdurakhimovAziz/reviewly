@@ -25,7 +25,6 @@ export class PostsController {
   @Public()
   findAll(@Query() query: any) {
     const { limit, page, sortBy } = query;
-
     return this.postsService.findAll(limit, page, sortBy);
   }
 

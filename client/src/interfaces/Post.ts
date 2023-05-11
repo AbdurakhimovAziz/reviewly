@@ -1,10 +1,11 @@
 import { PostGroup } from 'utils';
 import { Tag } from './Tag';
+import { User } from './User';
 
 export interface Post {
   _id: string;
   title: string;
-  author: string;
+  author: User;
   reviewedItem: string;
   group: PostGroup;
   tags: Tag[];

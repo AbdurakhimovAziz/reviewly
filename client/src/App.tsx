@@ -1,4 +1,4 @@
-import { CssBaseline } from '@mui/material';
+import { Container, CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { getUserById } from 'api/user';
 import { useEffect, useMemo } from 'react';
@@ -30,11 +30,17 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
       <Header></Header>
-      <Routes>
-        {router.map((route) => (
-          <Route path={route.path} key={route.path} element={route.component} />
-        ))}
-      </Routes>
+      <Container>
+        <Routes>
+          {router.map((route) => (
+            <Route
+              path={route.path}
+              key={route.path}
+              element={route.component}
+            />
+          ))}
+        </Routes>
+      </Container>
     </ThemeProvider>
   );
 }
