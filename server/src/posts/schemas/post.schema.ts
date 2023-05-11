@@ -32,6 +32,9 @@ export class Post extends Document {
 
   @Prop({ type: Map, of: Boolean, default: {} })
   likes: Map<string, boolean>;
+
+  @Prop({ required: true })
+  previewText: string;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);

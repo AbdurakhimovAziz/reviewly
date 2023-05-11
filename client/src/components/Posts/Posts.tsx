@@ -4,10 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { routePaths } from 'router';
 import { sortParam } from 'utils';
 import { PostsList } from './components/PostsList';
-import { PostsProps } from './types';
 import { sortOptionTitleMap } from './utils';
 
-export const Posts = ({}: PostsProps) => {
+export const Posts = () => {
   const navigate = useNavigate();
   const goToPostsPage = (sortBy: sortParam) => {
     navigate(routePaths.POSTS, {

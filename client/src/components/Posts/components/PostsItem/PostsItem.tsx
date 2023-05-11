@@ -14,7 +14,6 @@ import { useNavigate } from 'react-router-dom';
 import { PostsItemProps } from './types';
 
 export const PostsItem = ({ post }: PostsItemProps) => {
-  const previewedText = post.body.slice(0, 100);
   const navigate = useNavigate();
 
   const viewPost = () => navigate(`/posts/${post._id}`);
@@ -44,11 +43,14 @@ export const PostsItem = ({ post }: PostsItemProps) => {
             />
           )}
           <CardContent sx={{ height: '100%' }}>
-            <Typography variant="h5" component="h2">
+            <Typography variant="h5" fontWeight="bold" component="h2">
               {post.title}
             </Typography>
             <Typography variant="caption" component="h2">
-              Author: {post.author.username}
+              By
+              <Typography component="span" fontWeight="bold" marginLeft={1}>
+                {post.author.username}
+              </Typography>
             </Typography>
             <Typography
               variant="body2"
@@ -56,9 +58,14 @@ export const PostsItem = ({ post }: PostsItemProps) => {
               color="textSecondary"
               component="p"
             >
-              {previewedText}
+              {post.previewText}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              fontWeight="bold"
+              component="p"
+            >
               Grade: {post.grade}/10
             </Typography>
           </CardContent>

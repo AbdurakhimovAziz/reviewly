@@ -10,6 +10,7 @@ export interface Post {
   group: PostGroup;
   tags: Tag[];
   body: string;
+  previewText: string;
   imageUrl: string;
   grade: number;
   likes: Map<string, boolean>;

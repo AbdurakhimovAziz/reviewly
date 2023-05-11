@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { TagProps } from './types';
 import { routePaths } from 'router';
 
-export const Tag = ({ tag }: TagProps) => {
+export const TagItem = ({ tag }: TagProps) => {
   const navigate = useNavigate();
   const goToPostsPage = () => {
     navigate(`${routePaths.POSTS}`, {
@@ -13,7 +13,7 @@ export const Tag = ({ tag }: TagProps) => {
 
   return (
     <Chip
-      label={tag.name}
+      label={`#${tag.name}`}
       component="button"
       variant="outlined"
       onClick={goToPostsPage}

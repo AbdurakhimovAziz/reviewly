@@ -32,7 +32,6 @@ export class PostsService {
   ) {
     const skip = (page - 1) * limit;
     let query = {};
-    console.log('tagName: ', tagName);
 
     if (tagName) {
       const tag = await this.tagsService.findByName(tagName);
@@ -41,16 +40,20 @@ export class PostsService {
 
     return this.postModel
       .find(query)
+      .select('-body')
       .sort({ [sortBy]: -1 })
       .skip(skip)
       .limit(limit)
-      .populate('tags')
-      .populate('author')
+      .populate('author', 'username')
       .exec();
   }
 
   public findOne(id: string) {
-    return this.postModel.findById(id);
+    return this.postModel
+      .findById(id)
+      .populate('author')
+      .populate('tags')
+      .exec();
   }
 
   public update(id: string, updatePostDto: UpdatePostDto) {

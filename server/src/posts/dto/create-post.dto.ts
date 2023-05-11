@@ -29,6 +29,10 @@ export class CreatePostDto {
   @IsString()
   body: string;
 
+  @IsNotEmpty()
+  @IsString()
+  previewText: string;
+
   @IsOptional()
   @IsString()
   imageUrl?: string;
