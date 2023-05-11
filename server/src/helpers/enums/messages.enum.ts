@@ -4,6 +4,7 @@ export enum ErrorMessages {
   USER_EXISTS = 'User already exists',
   USER_NOT_FOUND = 'User not found',
   ALREADY_ADMIN = 'User is already an admin',
+  TAG_EXISTS = 'Tag already exists',
 }
 
 export enum SuccessMessages {
