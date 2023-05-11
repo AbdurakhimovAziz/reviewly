@@ -22,7 +22,9 @@ export const Posts = ({}: PostsProps) => {
           <Fragment key={option}>
             <Typography variant="h4">{title}</Typography>
             <PostsList sortBy={option} />
-            <Button onClick={() => goToPostsPage(option)}>View more</Button>
+            <Button variant="outlined" onClick={() => goToPostsPage(option)}>
+              View more
+            </Button>
           </Fragment>
         )
       )}

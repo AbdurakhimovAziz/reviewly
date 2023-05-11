@@ -21,17 +21,26 @@ export class PostsService {
     await this.tagsService.updateOrCreateTags(tagNames);
     const tags = await this.tagsService.findMany(tagNames);
     const tagIds = tags.map((tag) => tag._id);
-    return this.postModel.create({ post, tags: tagIds });
+    return this.postModel.create({ ...post, tags: tagIds });
   }
 
-  public findAll(
+  public async findAll(
     limit: number = 10,
     page: number = 1,
     sortBy: PostSortParams = PostSortParams.DATE,
+    tagName?: string,
   ) {
     const skip = (page - 1) * limit;
+    let query = {};
+    console.log('tagName: ', tagName);
+
+    if (tagName) {
+      const tag = await this.tagsService.findByName(tagName);
+      query = { tags: tag._id };
+    }
+
     return this.postModel
-      .find()
+      .find(query)
       .sort({ [sortBy]: -1 })
       .skip(skip)
       .limit(limit)

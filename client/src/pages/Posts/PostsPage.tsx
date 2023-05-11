@@ -15,10 +15,12 @@ import { useLocation } from 'react-router-dom';
 import { sortParam } from 'utils';
 
 export const PostsPage = () => {
-  const location = useLocation();
-  const { state } = location;
-  const [sortBy, setSortBy] = useState<sortParam>(state?.sortBy);
-  const [limit, setLimit] = useState(10);
+  const { state } = useLocation();
+  const [sortBy, setSortBy] = useState<sortParam>(
+    state?.sortBy || sortParam.DATE
+  );
+  const [limit, setLimit] = useState(30);
+  const tag: string | undefined = state?.tag;
 
   const handleSelectChange = (event: SelectChangeEvent) => {
     setSortBy(event.target.value as sortParam);
@@ -32,7 +34,15 @@ export const PostsPage = () => {
         justifyContent="space-between"
         marginBottom={2}
       >
-        <Typography variant="h4">Posts</Typography>
+        <Typography variant="h4">
+          Posts{' '}
+          {tag && (
+            <Typography component="span" variant="h5" color="success">
+              with tag {tag}
+            </Typography>
+          )}{' '}
+        </Typography>
+
         <FormControl>
           <InputLabel id="sort-option">Sort By</InputLabel>
           <Select
@@ -50,7 +60,7 @@ export const PostsPage = () => {
           </Select>
         </FormControl>
       </Stack>
-      <PostsList sortBy={sortBy} limit={limit} />
+      <PostsList sortBy={sortBy} limit={limit} tag={tag} />
     </Box>
   );
 };

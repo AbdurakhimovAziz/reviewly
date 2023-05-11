@@ -1,3 +1,4 @@
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import {
   Button,
   Card,
@@ -9,9 +10,8 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { PostsItemProps } from './types';
 import { useNavigate } from 'react-router-dom';
+import { PostsItemProps } from './types';
 
 export const PostsItem = ({ post }: PostsItemProps) => {
   const previewedText = post.body.slice(0, 100);
@@ -20,14 +20,7 @@ export const PostsItem = ({ post }: PostsItemProps) => {
   const viewPost = () => navigate(`/posts/${post._id}`);
 
   return (
-    <Grid
-      item
-      xs={6}
-      md={4}
-      sx={{
-        width: 240,
-      }}
-    >
+    <Grid item xs={6} md={4}>
       <Card
         elevation={5}
         sx={{
@@ -42,8 +35,12 @@ export const PostsItem = ({ post }: PostsItemProps) => {
             <CardMedia
               component="img"
               image={post.imageUrl}
-              height="auto"
+              height={200}
+              width={150}
               alt="Post Image"
+              sx={{
+                objectFit: 'cover',
+              }}
             />
           )}
           <CardContent sx={{ height: '100%' }}>

@@ -8,11 +8,12 @@ import { setToken, setUser } from 'store/slices/main';
 import { Header } from './components/Header';
 import { router } from './router';
 import { getColorMode } from './store';
+import { getTheme } from './theme';
 
 function App() {
   const mode = useSelector(getColorMode);
   const dispatch = useDispatch();
-  const theme = useMemo(() => createTheme({ palette: { mode: mode } }), [mode]);
+  const theme = useMemo(() => createTheme(getTheme(mode)), [mode]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
