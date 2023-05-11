@@ -1,5 +1,5 @@
-export const BASE_URL = 'http://localhost:3000';
-// export const BASE_URL = 'https://reviewly-server.onrender.com';
+// export const BASE_URL = 'http://localhost:3000';
+export const BASE_URL = 'https://reviewly-server.onrender.com';
 export enum endpoints {
   login = '/auth/login',
   register = '/auth/register',
