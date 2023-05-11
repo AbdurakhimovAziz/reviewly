@@ -1,4 +1,4 @@
-import { AppBar, Box, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { routePaths } from 'router';
 import { useAppSelector, getUser } from 'store';
@@ -28,6 +28,16 @@ export const Header = () => {
             Reviewly
           </Typography>
           <ColorMode />
+          {isAuth && (
+            <Button
+              component={Link}
+              to={routePaths.CREATE_POST}
+              variant="contained"
+              color="info"
+            >
+              Create Post
+            </Button>
+          )}
           {isAuth ? <ProfileIcon /> : <AuthButtons />}
         </Toolbar>
       </AppBar>

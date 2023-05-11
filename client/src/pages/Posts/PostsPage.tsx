@@ -40,7 +40,7 @@ export const PostsPage = () => {
             <Typography component="span" variant="h5" color="success">
               with tag {tag}
             </Typography>
-          )}{' '}
+          )}
         </Typography>
 
         <FormControl>

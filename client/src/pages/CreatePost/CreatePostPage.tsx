@@ -1,3 +1,5 @@
+import { AddEditPostForm } from 'forms/AddEditPost/AddEditPost';
+
 export const CreatePostPage = () => {
-  return <div>CreatePostPage</div>;
+  return <AddEditPostForm />;
 };

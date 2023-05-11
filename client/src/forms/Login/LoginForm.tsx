@@ -68,7 +68,7 @@ export const LoginForm = () => {
       >
         {Object.keys(loginFormFields).map((key) => {
           const field = key as keyof LoginFormValues;
-          const { autocomplete, id, label, type, autofocus, errorMsg } =
+          const { autocomplete, id, label, type, autofocus } =
             loginFormFields[field];
           return (
             <TextField

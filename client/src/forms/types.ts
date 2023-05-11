@@ -6,7 +6,7 @@ export type FormFieldConfig = {
   id: string;
   label: string;
   type: HTMLInputTypeAttribute;
-  autocomplete: string;
+  autocomplete?: string;
   autofocus?: boolean;
-  errorMsg?: string;
+  options?: string[];
 };
