@@ -10,8 +10,6 @@ export const Header = () => {
   const user = useAppSelector(getUser);
   const isAuth = Boolean(user);
 
-  // const isMobileScreen = useMediaQuery('(max-width:1000px)');
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">

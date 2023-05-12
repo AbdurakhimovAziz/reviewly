@@ -7,8 +7,9 @@ import { PostsItem } from '../PostsItem';
 import { PostsListProps } from './types';
 
 export const PostsList = ({ sortBy, limit, tag }: PostsListProps) => {
-  const { data, isLoading, isError } = useQuery([QueryKeys.POSTS, sortBy], () =>
-    getPosts({ sortBy, limit, tag })
+  const { data, isLoading, isError } = useQuery(
+    [QueryKeys.POSTS, sortBy, tag],
+    () => getPosts({ sortBy, limit, tag })
   );
 
   if (!data) return <div>No data found</div>;
