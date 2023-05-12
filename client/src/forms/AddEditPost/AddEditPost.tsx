@@ -15,7 +15,7 @@ import { createPost } from 'api/posts/createPost';
 import { uploadImage } from 'api/posts/uploadImage';
 import { getTags } from 'api/tags';
 import 'easymde/dist/easymde.min.css';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, set, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
@@ -71,6 +71,7 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
   const handleBodyChange = useCallback(
     (value: string) => {
       setBodyText(value);
+      console.log(value);
     },
     [bodyText]
   );
