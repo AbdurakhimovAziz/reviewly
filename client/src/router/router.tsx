@@ -6,6 +6,7 @@ import { HomePage } from '../pages/Home';
 import { LoginPage } from '../pages/Login';
 import { RegisterPage } from '../pages/Register';
 import { routePaths } from './routes';
+import { ProtectedRoute } from 'components/ProtectedRoute';
 
 export const router = [
   {
@@ -26,6 +27,7 @@ export const router = [
   },
   {
     path: routePaths.CREATE_POST,
+    isProtected: true,
     component: <CreatePostPage />,
   },
   {
@@ -34,6 +36,7 @@ export const router = [
   },
   {
     path: routePaths.EDIT_POST,
+    isProtected: true,
     component: <UpdatePostPage />,
   },
 ];

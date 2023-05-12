@@ -7,4 +7,6 @@ export enum endpoints {
   profile = '/auth/profile',
   google = '/auth/google',
   github = '/auth/github',
+  posts = '/posts',
+  post = '/posts/:id',
 }
