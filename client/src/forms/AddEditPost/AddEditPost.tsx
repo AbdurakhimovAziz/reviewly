@@ -50,14 +50,8 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
     Object.assign(img, {
       preview: URL.createObjectURL(img),
     });
-
     setImage(img);
-    console.log(img, image);
   }, []);
-
-  useEffect(() => {
-    console.log(image);
-  }, [image]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -84,16 +78,21 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
 
   const onSubmit = useCallback(
     async (formValues: AddEditPostFormValues) => {
-      if (!image || !user) return;
-      const { url: imageUrl } = await uploadImage(image);
+      if (!user) return;
+
       const newPost: PostCreateRequest = {
         ...formValues,
         grade: Number(formValues.grade),
         body: bodyText,
         author: user._id,
-        imageUrl,
         previewText: bodyText.slice(0, 100),
       };
+
+      if (image) {
+        const { url } = await uploadImage(image);
+        newPost.imageUrl = url;
+      }
+
       mutate(newPost);
     },
     [image]

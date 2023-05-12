@@ -8,6 +8,7 @@ import {
 import { QueryKeys } from 'api';
 import { getPost } from 'api/posts/getPost';
 import { TagsList } from 'components/Tags/components/TagsList';
+import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import { useQuery } from 'react-query';
 import { Navigate, useParams } from 'react-router-dom';
 import { routePaths } from 'router';
@@ -43,9 +44,11 @@ export const PostPage = () => {
         <Typography variant="h6" component="h2">
           Grade: {post.grade}/10
         </Typography>
-        <Typography variant="h6">Reviewed item: {post.reviewedItem}</Typography>
+        <Typography variant="h6">
+          Reviewed item: <ReactMarkdown>{post.reviewedItem}</ReactMarkdown>
+        </Typography>
         <Box paddingY={2}>
-          <Typography variant="body1">{post?.body}</Typography>
+          <ReactMarkdown>{post?.body}</ReactMarkdown>
         </Box>
         <Box paddingY={2}>
           <TagsList tags={post.tags} />
