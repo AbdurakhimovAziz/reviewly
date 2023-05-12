@@ -10,9 +10,9 @@ export enum ErrorMessages {
 }
 
 export enum PostGroup {
-  MOVIE = 'movie',
-  BOOK = 'book',
-  GAME = 'game',
+  MOVIES = 'Movies',
+  BOOKS = 'Books',
+  GAMES = 'Games',
 }
 
 export enum sortParam {

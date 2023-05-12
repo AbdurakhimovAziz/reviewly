@@ -1,6 +1,7 @@
 import { Container, CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { getUserById } from 'api/user';
+import { ProtectedRoute } from 'components/ProtectedRoute';
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
@@ -33,11 +34,17 @@ function App() {
       <Header></Header>
       <Container>
         <Routes>
-          {router.map((route) => (
+          {router.map(({ path, isProtected, component }) => (
             <Route
-              path={route.path}
-              key={route.path}
-              element={route.component}
+              path={path}
+              key={path}
+              element={
+                isProtected ? (
+                  <ProtectedRoute>{component}</ProtectedRoute>
+                ) : (
+                  component
+                )
+              }
             />
           ))}
         </Routes>

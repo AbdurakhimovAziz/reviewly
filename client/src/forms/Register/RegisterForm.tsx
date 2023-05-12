@@ -64,7 +64,7 @@ export const RegisterForm = () => {
       >
         {Object.keys(registerFormFields).map((key) => {
           const field = key as keyof RegisterFormValues;
-          const { autocomplete, id, label, type, autofocus, errorMsg } =
+          const { autocomplete, id, label, type, autofocus } =
             registerFormFields[field];
           return (
             <TextField
