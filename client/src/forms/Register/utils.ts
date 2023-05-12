@@ -15,20 +15,17 @@ export const registerFormFields: formFieldType<RegisterFormValues> = {
     type: 'email',
     autocomplete: 'email',
     autofocus: true,
-    errorMsg: 'Email is required',
   },
   username: {
     id: 'username',
     label: 'Username',
     type: 'text',
     autocomplete: 'username',
-    errorMsg: 'Username is required',
   },
   password: {
     id: 'password',
     label: 'Password',
     type: 'password',
     autocomplete: 'current-password',
-    errorMsg: 'Password is required',
   },
 };

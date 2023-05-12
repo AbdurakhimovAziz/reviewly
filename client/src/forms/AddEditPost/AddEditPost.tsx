@@ -27,12 +27,13 @@ import {
   AddEditPostProps,
   AddEditPostTextField,
   AddEditPostTextFields,
+  FileWithPreview,
   PostCreateRequest,
 } from './types';
 
 export const AddEditPostForm = ({ post }: AddEditPostProps) => {
   const [bodyText, setBodyText] = useState('');
-  const [image, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<FileWithPreview | null>(null);
   const user = useAppSelector(getUser);
   const navigate = useNavigate();
   const { data: tags } = useQuery([QueryKeys.TAGS], () => getTags(100), {
@@ -46,10 +47,8 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
   } = useForm<AddEditPostFormValues>();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    const img = acceptedFiles[0];
-    Object.assign(img, {
-      preview: URL.createObjectURL(img),
-    });
+    const img = acceptedFiles[0] as FileWithPreview;
+    img.preview = URL.createObjectURL(img);
     setImage(img);
   }, []);
 
