@@ -48,3 +48,7 @@ export const AddEditPostTextFields: formFieldType<
     options: postGroupOptions,
   },
 };
+
+export type FileWithPreview = File & {
+  preview: string;
+};

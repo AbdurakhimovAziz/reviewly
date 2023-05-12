@@ -14,13 +14,11 @@ export const loginFormFields: formFieldType<LoginFormValues> = {
     type: 'email',
     autocomplete: 'email',
     autofocus: true,
-    errorMsg: 'Email is required',
   },
   password: {
     id: 'password',
     label: 'Password',
     type: 'password',
     autocomplete: 'current-password',
-    errorMsg: 'Password is required',
   },
 };
