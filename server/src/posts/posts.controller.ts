@@ -7,10 +7,12 @@ import {
   Patch,
   Post,
   Query,
+  Request,
 } from '@nestjs/common';
 import { CreatePostDto, UpdatePostDto } from './dto';
 import { PostsService } from './posts.service';
 import { Public } from 'src/helpers/decorators';
+import { RequestWithUser } from 'src/helpers/types';
 
 @Controller('posts')
 export class PostsController {
@@ -42,5 +44,10 @@ export class PostsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.postsService.remove(id);
+  }
+
+  @Post(':id/like')
+  like(@Param('id') id: string, @Request() req: RequestWithUser) {
+    return this.postsService.like(id, req.user.sub);
   }
 }

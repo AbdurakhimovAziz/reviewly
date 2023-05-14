@@ -18,6 +18,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { getUser, useAppSelector } from 'store';
 import { PostsItemProps } from './types';
+import { LikePost } from '../LikePost';
 
 export const PostsItem = ({ post }: PostsItemProps) => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export const PostsItem = ({ post }: PostsItemProps) => {
   const { mutate } = useMutation({
     mutationFn: deletePost,
     onSuccess: () => {
-      queryClient.invalidateQueries([QueryKeys.POSTS]);
+      queryClient.invalidateQueries([QueryKeys.POSTS, post._id]);
     },
   });
 
@@ -73,7 +74,7 @@ export const PostsItem = ({ post }: PostsItemProps) => {
               color="textSecondary"
               component="p"
             >
-              <ReactMarkdown>{post.previewText}</ReactMarkdown>
+              {post.previewText}
             </Typography>
             <Typography
               variant="body2"
@@ -93,9 +94,9 @@ export const PostsItem = ({ post }: PostsItemProps) => {
           <Button size="small" onClick={viewPost}>
             Read more
           </Button>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon sx={{ color: 'red' }} />
-          </IconButton>
+          {user && (
+            <LikePost postId={post._id} isLiked={user._id in post.likes} />
+          )}
           {user && user?._id === post.author._id && (
             <IconButton
               color="error"

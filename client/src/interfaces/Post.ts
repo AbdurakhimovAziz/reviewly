@@ -13,7 +13,7 @@ export interface Post {
   previewText: string;
   imageUrl: string;
   grade: number;
-  likes: Map<string, boolean>;
+  likes: Record<string, boolean>;
   createdAt: string;
   updatedAt: string;
 }

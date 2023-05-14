@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { PostSortParams } from 'src/helpers/enums';
+import { ErrorMessages, PostSortParams } from 'src/helpers/enums';
 import { TagsService } from 'src/tags/tags.service';
 import { CreatePostDto, UpdatePostDto } from './dto';
 import { Post } from './schemas/post.schema';
@@ -64,5 +64,21 @@ export class PostsService {
     const post = await this.postModel.findById(id);
     await this.tagsService.decreaseFrequency(post.tags);
     return this.postModel.deleteOne({ _id: id });
+  }
+
+  public async like(postId: string, userId: string) {
+    const post = await this.postModel.findById(postId);
+    if (!post) {
+      throw new NotFoundException(ErrorMessages.POST_NOT_FOUND);
+    }
+
+    const isLiked = post.likes.has(userId);
+    if (isLiked) {
+      post.likes.delete(userId);
+    } else {
+      post.likes.set(userId, true);
+    }
+
+    return post.save();
   }
 }

@@ -125,7 +125,13 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
       />
       <TagsInput control={control} errors={errors} defaultTags={post?.tags} />
       <Button type="submit" fullWidth variant="contained" color="primary">
-        {isLoading ? <CircularProgress /> : post ? 'Update' : 'Create'} Post
+        {isLoading ? (
+          <CircularProgress />
+        ) : post ? (
+          'Update Post'
+        ) : (
+          'Create Post'
+        )}
       </Button>
     </Container>
   );
