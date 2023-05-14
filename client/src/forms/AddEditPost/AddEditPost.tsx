@@ -1,27 +1,22 @@
 import {
-  Autocomplete,
-  Box,
   Button,
-  Chip,
+  CircularProgress,
   Container,
   MenuItem,
-  Paper,
-  Rating,
   TextField,
-  Typography,
 } from '@mui/material';
-import { QueryKeys } from 'api';
 import { createPost } from 'api/posts/createPost';
 import { uploadImage } from 'api/posts/uploadImage';
-import { getTags } from 'api/tags';
 import 'easymde/dist/easymde.min.css';
 import { useCallback, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { Controller, set, useForm } from 'react-hook-form';
-import { useMutation, useQuery } from 'react-query';
+import { useForm } from 'react-hook-form';
+import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import SimpleMDE from 'react-simplemde-editor';
 import { getUser, useAppSelector } from 'store';
+import { GradeInput } from './components/GradeInput';
+import { ImageInput } from './components/ImageInput';
+import { TagsInput } from './components/TagsInput';
 import {
   AddEditPostFormValues,
   AddEditPostProps,
@@ -36,9 +31,7 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
   const [image, setImage] = useState<FileWithPreview | null>(null);
   const user = useAppSelector(getUser);
   const navigate = useNavigate();
-  const { data: tags } = useQuery([QueryKeys.TAGS], () => getTags(100), {
-    initialData: [],
-  });
+
   const {
     register,
     formState: { errors },
@@ -52,29 +45,18 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
     setImage(img);
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: {
-      'image/*': ['.png', '.jpg', '.jpeg'],
-    },
-    maxFiles: 1,
-  });
+  const handleImageDelete = () => setImage(null);
 
   const { mutate, isLoading } = useMutation({
     mutationFn: createPost,
     onSuccess: (data) => {
-      console.log(data);
       navigate(`/posts/${data._id}`);
     },
   });
 
-  const handleBodyChange = useCallback(
-    (value: string) => {
-      setBodyText(value);
-      console.log(value);
-    },
-    [bodyText]
-  );
+  const handleBodyChange = useCallback((value: string) => {
+    setBodyText(value);
+  }, []);
 
   const onSubmit = useCallback(
     async (formValues: AddEditPostFormValues) => {
@@ -82,7 +64,6 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
 
       const newPost: PostCreateRequest = {
         ...formValues,
-        grade: Number(formValues.grade),
         body: bodyText,
         author: user._id,
         previewText: bodyText.slice(0, 100),
@@ -95,7 +76,7 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
 
       mutate(newPost);
     },
-    [image]
+    [image, bodyText, user, mutate]
   );
 
   return (
@@ -135,75 +116,16 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
         );
       })}
 
-      <Controller
-        name="grade"
-        control={control}
-        defaultValue={2}
-        render={({ field }) => (
-          <>
-            <Typography>Grade: </Typography> <Rating max={10} {...field} />
-          </>
-        )}
+      <ImageInput onDrop={onDrop} onDelete={handleImageDelete} image={image} />
+      <GradeInput control={control} defaultValue={0} max={10} />
+      <SimpleMDE
+        onChange={handleBodyChange}
+        defaultValue={post?.body}
+        value={bodyText}
       />
-
-      <Box component="div" marginY={4} {...getRootProps()}>
-        <input accept="iamge/*" {...getInputProps()} />
-        {image ? (
-          <Paper width="100%" component="img" src={image.preview} />
-        ) : isDragActive ? (
-          <Paper sx={{ padding: 4 }} className="dropzone">
-            Drop your image files here
-          </Paper>
-        ) : (
-          <Paper sx={{ padding: 4 }} className="dropzone">
-            Drag and drop some files here, or click to select files
-          </Paper>
-        )}
-      </Box>
-
-      <SimpleMDE onChange={handleBodyChange} defaultValue={post?.body} />
-
-      {tags && (
-        <Controller
-          name="tagNames"
-          control={control}
-          defaultValue={[]}
-          render={({ field }) => (
-            <Autocomplete
-              {...field}
-              sx={{ marginBottom: 2 }}
-              multiple
-              id="tags"
-              options={tags.map(({ name }) => name)}
-              freeSolo
-              onChange={(event, value) => field.onChange(value)}
-              renderTags={(value: readonly string[], getTagProps) =>
-                value.map((option: string, index: number) => (
-                  <Chip
-                    variant="outlined"
-                    color="primary"
-                    label={option}
-                    {...getTagProps({ index })}
-                  />
-                ))
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="outlined"
-                  label="tags"
-                  placeholder="Favorites"
-                  error={Boolean(errors.tagNames)}
-                  helperText={errors.tagNames?.message}
-                />
-              )}
-            />
-          )}
-        />
-      )}
-
+      <TagsInput control={control} errors={errors} defaultTags={post?.tags} />
       <Button type="submit" fullWidth variant="contained" color="primary">
-        {post ? 'Update' : 'Create'} Post
+        {isLoading ? <CircularProgress /> : post ? 'Update' : 'Create'} Post
       </Button>
     </Container>
   );

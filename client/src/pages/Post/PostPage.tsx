@@ -44,9 +44,7 @@ export const PostPage = () => {
         <Typography variant="h6" component="h2">
           Grade: {post.grade}/10
         </Typography>
-        <Typography variant="h6">
-          Reviewed item: <ReactMarkdown>{post.reviewedItem}</ReactMarkdown>
-        </Typography>
+        <Typography variant="h6">Reviewed item: {post.reviewedItem}</Typography>
         <Box paddingY={2}>
           <ReactMarkdown>{post?.body}</ReactMarkdown>
         </Box>

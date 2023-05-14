@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { QueryKeys } from 'api';
 import { deletePost } from 'api/posts';
+import ReactMarkdown from 'react-markdown';
 import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { getUser, useAppSelector } from 'store';
@@ -72,7 +73,7 @@ export const PostsItem = ({ post }: PostsItemProps) => {
               color="textSecondary"
               component="p"
             >
-              {post.previewText}
+              <ReactMarkdown>{post.previewText}</ReactMarkdown>
             </Typography>
             <Typography
               variant="body2"
