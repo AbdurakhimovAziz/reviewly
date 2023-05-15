@@ -19,3 +19,8 @@ export enum sortParam {
   DATE = 'createdAt',
   GRADE = 'grade',
 }
+
+export enum Role {
+  ADMIN = 'admin',
+  USER = 'user',
+}

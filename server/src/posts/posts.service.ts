@@ -44,13 +44,23 @@ export class PostsService {
       .sort({ [sortBy]: -1 })
       .skip(skip)
       .limit(limit)
-      .populate('author', 'username')
+      .populate('author')
       .exec();
   }
 
   public findOne(id: string) {
     return this.postModel
       .findById(id)
+      .populate('author')
+      .populate('tags')
+      .exec();
+  }
+
+  public async findByAuthor(id: string) {
+    return this.postModel
+      .find({ author: id })
+      .select('-body')
+      .sort({ createdAt: -1 })
       .populate('author')
       .populate('tags')
       .exec();

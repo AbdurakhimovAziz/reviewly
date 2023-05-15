@@ -3,10 +3,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDto, UpdateUserDto, createSocialUserDto } from './dto';
 import { User } from './schemas/user.schema';
+import { PostsService } from 'src/posts/posts.service';
 
 @Injectable()
 export class UsersService {
   constructor(
+    private readonly postsService: PostsService,
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {}
 
@@ -40,6 +42,10 @@ export class UsersService {
 
   public findByEmail(email: string): Promise<User> {
     return this.userModel.findOne({ email }).exec();
+  }
+
+  public async getPosts(id: string) {
+    return this.postsService.findByAuthor(id);
   }
 
   public update(id: string, updateUserDto: UpdateUserDto): Promise<User> {

@@ -26,16 +26,7 @@ export const Header = () => {
             Reviewly
           </Typography>
           <ColorMode />
-          {isAuth && (
-            <Button
-              component={Link}
-              to={routePaths.CREATE_POST}
-              variant="contained"
-              color="info"
-            >
-              Create Post
-            </Button>
-          )}
+
           {isAuth ? <ProfileIcon /> : <AuthButtons />}
         </Toolbar>
       </AppBar>

@@ -1,5 +1,4 @@
 import DeleteIcon from '@mui/icons-material/Delete';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import {
   Button,
   Card,
@@ -13,7 +12,6 @@ import {
 } from '@mui/material';
 import { QueryKeys } from 'api';
 import { deletePost } from 'api/posts';
-import ReactMarkdown from 'react-markdown';
 import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { getUser, useAppSelector } from 'store';
@@ -23,16 +21,8 @@ import { LikePost } from '../LikePost';
 export const PostsItem = ({ post }: PostsItemProps) => {
   const navigate = useNavigate();
   const user = useAppSelector(getUser);
-  const queryClient = useQueryClient();
-  const { mutate } = useMutation({
-    mutationFn: deletePost,
-    onSuccess: () => {
-      queryClient.invalidateQueries([QueryKeys.POSTS, post._id]);
-    },
-  });
 
   const viewPost = () => navigate(`/posts/${post._id}`);
-  const handleDeleteClick = () => mutate(post._id);
 
   return (
     <Grid item xs={6} md={4}>
@@ -96,15 +86,6 @@ export const PostsItem = ({ post }: PostsItemProps) => {
           </Button>
           {user && (
             <LikePost postId={post._id} isLiked={user._id in post.likes} />
-          )}
-          {user && user?._id === post.author._id && (
-            <IconButton
-              color="error"
-              aria-label="delete"
-              onClick={handleDeleteClick}
-            >
-              <DeleteIcon />
-            </IconButton>
           )}
         </CardActions>
       </Card>

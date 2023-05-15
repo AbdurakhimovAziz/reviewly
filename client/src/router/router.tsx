@@ -6,6 +6,7 @@ import { HomePage } from '../pages/Home';
 import { LoginPage } from '../pages/Login';
 import { RegisterPage } from '../pages/Register';
 import { routePaths } from './routes';
+import { ProfilePage } from 'pages/Profile';
 
 export const router = [
   {
@@ -37,5 +38,10 @@ export const router = [
     path: routePaths.EDIT_POST,
     isProtected: true,
     component: <UpdatePostPage />,
+  },
+  {
+    path: routePaths.PROFILE,
+    isProtected: true,
+    component: <ProfilePage />,
   },
 ];

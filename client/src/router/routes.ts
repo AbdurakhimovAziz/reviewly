@@ -6,5 +6,5 @@ export enum routePaths {
   POST = '/posts/:id',
   CREATE_POST = '/posts/create',
   EDIT_POST = '/posts/edit/:id',
-  PROFILE = '/profile',
+  PROFILE = '/profile/:id',
 }

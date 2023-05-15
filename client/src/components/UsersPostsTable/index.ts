@@ -1,0 +1,1 @@
+export { UsersPostsTable } from './UsersPostsTable';
