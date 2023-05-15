@@ -66,8 +66,22 @@ export class PostsService {
       .exec();
   }
 
-  public update(id: string, updatePostDto: UpdatePostDto) {
-    return this.postModel.findByIdAndUpdate(id, updatePostDto, { new: true });
+  public async update(id: string, updatePostDto: UpdatePostDto) {
+    const post = await this.postModel.findById(id);
+    await this.tagsService.decreaseFrequency(post.tags);
+
+    const { tagNames, ...postBody } = updatePostDto;
+    await this.tagsService.updateOrCreateTags(tagNames);
+    const tags = await this.tagsService.findMany(tagNames);
+    const tagIds = tags.map((tag) => tag._id);
+    return this.postModel.findByIdAndUpdate(
+      id,
+      {
+        ...postBody,
+        tags: tagIds,
+      },
+      { new: true },
+    );
   }
 
   public async remove(id: string) {

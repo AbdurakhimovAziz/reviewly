@@ -28,6 +28,10 @@ export class UpdatePostDto {
 
   @IsOptional()
   @IsString()
+  previewText?: string;
+
+  @IsOptional()
+  @IsString()
   imageUrl?: string;
 
   @IsOptional()
@@ -37,6 +41,6 @@ export class UpdatePostDto {
   grade?: number;
 
   @IsOptional()
-  @ValidateNested({ each: true })
-  tags?: string[];
+  @IsString({ each: true })
+  tagNames?: string[];
 }
