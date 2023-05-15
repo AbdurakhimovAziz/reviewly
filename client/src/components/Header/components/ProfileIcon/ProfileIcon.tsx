@@ -3,15 +3,24 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { MouseEvent, useState } from 'react';
-import { useAppDispatch } from 'store';
+import { useNavigate } from 'react-router-dom';
+import { routePaths } from 'router';
+import { getUser, useAppDispatch, useAppSelector } from 'store';
 import { setLogout } from 'store/slices/main';
 
 export const ProfileIcon = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
+  const user = useAppSelector(getUser);
+  const navigate = useNavigate();
 
   const handleMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileClick = () => {
+    handleClose();
+    navigate(`/profile/${user?._id}`);
   };
 
   const handleClose = () => {
@@ -50,7 +59,7 @@ export const ProfileIcon = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
         <MenuItem onClick={handleLogout}>Log Out</MenuItem>
       </Menu>
     </div>

@@ -30,7 +30,7 @@ export class Post extends Document {
   @Prop({ required: true, min: 0, max: 10 })
   grade: number;
 
-  @Prop({ type: Map, of: Boolean, default: {} })
+  @Prop({ type: Map, of: String, required: true, default: {} })
   likes: Map<string, boolean>;
 
   @Prop({ required: true })

@@ -17,5 +17,16 @@ export const Endpoints = {
     GET_ONE: '/:id',
     UPDATE: '/:id',
     DELETE: '/:id',
+    GET_POSTS: '/:id/posts',
+  },
+
+  POSTS: {
+    BASE: '/posts',
+    GET_ALL: '/',
+    GET_ONE: '/:id',
+    CREATE: '/',
+    UPDATE: '/:id',
+    DELETE: '/:id',
+    LIKE: '/:id/like',
   },
 };

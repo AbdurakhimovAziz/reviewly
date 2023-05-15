@@ -1,8 +1,6 @@
-import * as yup from 'yup';
-
-import { formFieldType } from '../types';
-import { AddEditPostFormValues } from './types';
 import { PostGroup } from 'utils';
+import * as yup from 'yup';
+import { AddEditPostFormValues } from './types';
 
 export const schema = yup.object<AddEditPostFormValues>().shape({
   title: yup.string().required(),

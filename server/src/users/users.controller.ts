@@ -26,4 +26,9 @@ export class UsersController {
   delete(@Param('id') id: string) {
     return this.usersService.delete(id);
   }
+
+  @Get(Endpoints.USERS.GET_POSTS)
+  getPosts(@Param('id') id: string) {
+    return this.usersService.getPosts(id);
+  }
 }

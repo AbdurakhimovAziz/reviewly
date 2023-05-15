@@ -8,5 +8,4 @@ export enum endpoints {
   google = '/auth/google',
   github = '/auth/github',
   posts = '/posts',
-  post = '/posts/:id',
 }

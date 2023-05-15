@@ -9,7 +9,7 @@ export const mockPosts = [
     imageUrl:
       'https://s3.amazonaws.com/static.rogerebert.com/uploads/review/primary_image/reviews/the-avengers-2012/EB20120502REVIEWS120509997AR.jpg',
     grade: 10,
-    likes: {},
+    likes: new Map(),
     previewText:
       'One of the weapons Marvel used in its climb to comic-book dominance was a willingness to invent new characters at a dizzying speed. There are so many Marvel universes...',
   },
@@ -30,7 +30,7 @@ export const mockPosts = [
     imageUrl:
       'https://s3.amazonaws.com/static.rogerebert.com/uploads/review/primary_image/reviews/guardians-of-the-galaxy-volume-3-2023/guardians-of-the-galaxy-volume-3-movie-review-2023.jpg',
     grade: 10,
-    likes: {},
+    likes: new Map(),
     previewText:
       "James Gunn loves his outcasts. One of the most interesting things about his “Guardians of the Galaxy” movies has been watching the tug-of-war between Gunn’s outsider instincts and a franchise-generating machine that’s as insider as it gets. He's one of the few filmmakers who has operated in the massive system of the ...",
   },
@@ -44,7 +44,7 @@ export const mockPosts = [
     imageUrl:
       'https://static.metacritic.com/images/products/games/4/39b8aca0211b21bea389c9d4eb70235a-98.jpg',
     grade: 9,
-    likes: {},
+    likes: new Map(),
     previewText:
       'Resident Evil 4, 2005’s legendary survival horror, is brought fully up-to-date in this ground-up remake. Six years after the events of Resident Evil 2, Raccoon City survivor Leon Kennedy has been dispatched to a secluded European village to investigate the disappearance of the US president’s...',
   },
@@ -58,7 +58,7 @@ export const mockPosts = [
     imageUrl:
       'https://assets1.ignimgs.com/2019/04/13/everyreviewever-starwars-slideshow-1555148935155.jpg?crop=16%3A9&width=888',
     grade: 6,
-    likes: {},
+    likes: new Map(),
     previewText:
       "At first I was afraid, I was petrified – I kept thinking 'how could Respawn follow up on its outstanding Star Wars Jedi: Fallen Order?' But then I spent so many nights playing the sequel finding out how they got it right and Cal Kestis grew strong, and I learned how to get along. And now we’re back, in outer space… okay, okay, don’t leave!...",
   },
