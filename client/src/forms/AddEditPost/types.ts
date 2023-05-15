@@ -22,6 +22,8 @@ export type PostCreateRequest = AddEditPostFormValues & {
   previewText: string;
 };
 
+export type PostUpdateRequest = Partial<PostCreateRequest>;
+
 export type AddEditPostTextField = Pick<
   AddEditPostFormValues,
   'title' | 'reviewedItem' | 'group'
@@ -47,8 +49,4 @@ export const AddEditPostTextFields: formFieldType<
     type: 'select',
     options: postGroupOptions,
   },
-};
-
-export type FileWithPreview = File & {
-  preview: string;
 };

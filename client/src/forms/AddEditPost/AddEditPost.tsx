@@ -8,7 +8,7 @@ import {
 import { createPost } from 'api/posts/createPost';
 import { uploadImage } from 'api/posts/uploadImage';
 import 'easymde/dist/easymde.min.css';
-import { useCallback, useState } from 'react';
+import { MouseEvent, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
@@ -22,13 +22,15 @@ import {
   AddEditPostProps,
   AddEditPostTextField,
   AddEditPostTextFields,
-  FileWithPreview,
   PostCreateRequest,
+  PostUpdateRequest,
 } from './types';
+import { updatePost } from 'api/posts';
 
 export const AddEditPostForm = ({ post }: AddEditPostProps) => {
-  const [bodyText, setBodyText] = useState('');
-  const [image, setImage] = useState<FileWithPreview | null>(null);
+  const [bodyText, setBodyText] = useState(post?.body || '');
+  const [image, setImage] = useState<File | null>();
+  const [imagePreview, setImagPreview] = useState<string>(post?.imageUrl || '');
   const user = useAppSelector(getUser);
   const navigate = useNavigate();
 
@@ -37,18 +39,35 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
     formState: { errors },
     handleSubmit,
     control,
-  } = useForm<AddEditPostFormValues>();
+  } = useForm<AddEditPostFormValues>({
+    defaultValues: {
+      title: post?.title || '',
+      grade: post?.grade || 0,
+      imageUrl: post?.imageUrl || '',
+    },
+  });
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    const img = acceptedFiles[0] as FileWithPreview;
-    img.preview = URL.createObjectURL(img);
+    const img = acceptedFiles[0];
+    setImagPreview(URL.createObjectURL(img));
     setImage(img);
   }, []);
 
-  const handleImageDelete = () => setImage(null);
+  const handleImageDelete = (e: MouseEvent) => {
+    e.stopPropagation();
+    setImagPreview('');
+    setImage(null);
+  };
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate: createMutate, isLoading: createIsLoading } = useMutation({
     mutationFn: createPost,
+    onSuccess: (data) => {
+      navigate(`/posts/${data._id}`);
+    },
+  });
+
+  const { mutate: updateMutate, isLoading } = useMutation({
+    mutationFn: (value: PostUpdateRequest) => updatePost(post?._id!, value),
     onSuccess: (data) => {
       navigate(`/posts/${data._id}`);
     },
@@ -58,7 +77,29 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
     setBodyText(value);
   }, []);
 
-  const onSubmit = useCallback(
+  const handlePostUpdate = useCallback(
+    async (formValues: AddEditPostFormValues) => {
+      if (!user || !post) return;
+
+      const editedPost: PostUpdateRequest = {
+        ...formValues,
+        body: bodyText,
+        author: post.author._id!,
+        previewText: bodyText.slice(0, 100),
+        imageUrl: post.imageUrl,
+      };
+
+      if (image) {
+        const { url } = await uploadImage(image);
+        editedPost.imageUrl = url;
+      }
+
+      updateMutate(editedPost);
+    },
+    [image, bodyText, user, updateMutate, post]
+  );
+
+  const handlePostCreate = useCallback(
     async (formValues: AddEditPostFormValues) => {
       if (!user) return;
 
@@ -74,9 +115,20 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
         newPost.imageUrl = url;
       }
 
-      mutate(newPost);
+      createMutate(newPost);
     },
-    [image, bodyText, user, mutate]
+    [image, bodyText, user, createMutate]
+  );
+
+  const onSubmit = useCallback(
+    async (formValues: AddEditPostFormValues) => {
+      if (post) {
+        handlePostUpdate(formValues);
+      } else {
+        handlePostCreate(formValues);
+      }
+    },
+    [post, handlePostUpdate, handlePostCreate]
   );
 
   return (
@@ -116,8 +168,12 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
         );
       })}
 
-      <ImageInput onDrop={onDrop} onDelete={handleImageDelete} image={image} />
-      <GradeInput control={control} defaultValue={0} max={10} />
+      <ImageInput
+        onDrop={onDrop}
+        onDelete={handleImageDelete}
+        imageUrl={imagePreview}
+      />
+      <GradeInput control={control} defaultValue={post?.grade} max={10} />
       <SimpleMDE
         onChange={handleBodyChange}
         defaultValue={post?.body}
@@ -125,7 +181,7 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
       />
       <TagsInput control={control} errors={errors} defaultTags={post?.tags} />
       <Button type="submit" fullWidth variant="contained" color="primary">
-        {isLoading ? (
+        {createIsLoading ? (
           <CircularProgress />
         ) : post ? (
           'Update Post'

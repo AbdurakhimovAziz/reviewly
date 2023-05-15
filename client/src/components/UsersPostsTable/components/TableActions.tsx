@@ -19,6 +19,7 @@ export const TableActions = ({ postId }: TableActionsProps) => {
 
   const handleDeleteClick = () => mutate(postId);
   const handlePreviewClick = () => navigate(`/posts/${postId}`);
+  const handleEditClick = () => navigate(`/posts/edit/${postId}`);
 
   return (
     <Stack gap={1} direction="row">
@@ -27,7 +28,7 @@ export const TableActions = ({ postId }: TableActionsProps) => {
           <DeleteIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Edit">
+      <Tooltip title="Edit" onClick={handleEditClick}>
         <IconButton color="info">
           <Edit />
         </IconButton>

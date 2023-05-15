@@ -4,7 +4,7 @@ import { ImageInputProps } from './types';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-export const ImageInput = ({ onDrop, image, onDelete }: ImageInputProps) => {
+export const ImageInput = ({ onDrop, imageUrl, onDelete }: ImageInputProps) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
@@ -31,7 +31,7 @@ export const ImageInput = ({ onDrop, image, onDelete }: ImageInputProps) => {
       }}
     >
       <input {...getInputProps()} />
-      {image ? (
+      {imageUrl ? (
         <Box position="relative">
           <IconButton
             onClick={onDelete}
@@ -39,7 +39,7 @@ export const ImageInput = ({ onDrop, image, onDelete }: ImageInputProps) => {
           >
             <DeleteIcon />
           </IconButton>
-          <Paper width="100%" component="img" src={image.preview} />
+          <Paper width="100%" component="img" src={imageUrl} />
         </Box>
       ) : (
         <Typography
