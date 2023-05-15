@@ -90,8 +90,8 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
       };
 
       if (image) {
-        const { url } = await uploadImage(image);
-        editedPost.imageUrl = url;
+        const { secure_url } = await uploadImage(image);
+        editedPost.imageUrl = secure_url;
       }
 
       updateMutate(editedPost);
@@ -111,8 +111,8 @@ export const AddEditPostForm = ({ post }: AddEditPostProps) => {
       };
 
       if (image) {
-        const { url } = await uploadImage(image);
-        newPost.imageUrl = url;
+        const { secure_url } = await uploadImage(image);
+        newPost.imageUrl = secure_url;
       }
 
       createMutate(newPost);
