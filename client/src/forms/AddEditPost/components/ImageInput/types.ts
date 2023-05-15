@@ -1,7 +1,7 @@
-import { FileWithPreview } from 'forms/AddEditPost/types';
+import { MouseEvent } from 'react';
 
 export type ImageInputProps = {
   onDrop: (acceptedFiles: File[]) => void;
-  image: FileWithPreview | null;
-  onDelete: () => void;
+  imageUrl?: string;
+  onDelete: (e: MouseEvent) => void;
 };
