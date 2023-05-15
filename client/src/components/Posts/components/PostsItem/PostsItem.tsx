@@ -1,4 +1,3 @@
-import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Button,
   Card,
@@ -7,12 +6,8 @@ import {
   CardContent,
   CardMedia,
   Grid,
-  IconButton,
   Typography,
 } from '@mui/material';
-import { QueryKeys } from 'api';
-import { deletePost } from 'api/posts';
-import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { getUser, useAppSelector } from 'store';
 import { PostsItemProps } from './types';
